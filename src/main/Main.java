@@ -7,14 +7,16 @@ public class Main
 {
 	private JDABuilder bot;
 	public static final CommandParser PARSER = new CommandParser();
-	private static final ChatListener LISTENER = new ChatListener(PARSER);
+	private static ChatListener listener;
+	private static CommandList commands;
 	public Main()
 	{
-		
+		commands = new CommandList();
+		listener  = new ChatListener(PARSER,commands);
 		bot = new JDABuilder();
 		try 
 		{
-			bot.addListener(LISTENER);
+			bot.addListener(listener);
 			bot.setBotToken("MjI1MzY5OTE4MjUyNjQ2NDAx.CroDtw.bLwog-OoOKUZcX5S3MlgrQhTTLw").buildBlocking();
 			bot.setAutoReconnect(true);
 			System.out.println("finished building");
