@@ -7,14 +7,26 @@ import net.dv8tion.jda.hooks.ListenerAdapter;
 public class ChatListener extends ListenerAdapter
 {
 	private static CommandParser parser;
-	public ChatListener(CommandParser pars)
+	private static CommandList commands;
+	public ChatListener(CommandParser pars, CommandList comms)
 	{
 		super();
+		commands = comms;
 		parser = pars;
 	}
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event)
 	{
-		
+		if(event.getAuthor().getId() != event.getJDA().getSelfInfo().getId())
+		{
+			if(event.getMessage().getContent().toLowerCase().startsWith("!"))
+			{
+				commands.handleCommand(parser.parse(event.getMessage().getContent(), event));
+			}
+			else
+			{
+				commands.handleCommand(event.getMessage().getContent().toLowerCase(),event);
+			}
+		}
 	}
 }
