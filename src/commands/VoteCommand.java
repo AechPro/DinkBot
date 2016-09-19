@@ -7,7 +7,7 @@ import net.dv8tion.jda.OnlineStatus;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
 
-public class VoteCommand extends ParameterCommand
+public class VoteCommand extends Command
 {
 	private boolean finished;
 	private int noVotes;
@@ -20,12 +20,7 @@ public class VoteCommand extends ParameterCommand
 	public VoteCommand(String m, File f, String n, int maxU) 
 	{
 		super(m, f, n, maxU);
-		yesVotes = 0;
-		noVotes = 0;
-		t0 = System.nanoTime();
-		usersVoted = new ArrayList<User>();
-		finished = false;
-		initTimer();
+		
 	}
 	
 	@Override
@@ -141,6 +136,7 @@ public class VoteCommand extends ParameterCommand
 		{
 			timer = new Thread()
 			{
+				@SuppressWarnings("static-access")
 				public void run()
 				{
 					while(!timedOut)
@@ -156,4 +152,16 @@ public class VoteCommand extends ParameterCommand
 		}
 	}
 	public boolean hasFinished(){return finished;}
+
+	@Override
+	public boolean create(String[] args)
+	{
+		yesVotes = 0;
+		noVotes = 0;
+		t0 = System.nanoTime();
+		usersVoted = new ArrayList<User>();
+		finished = false;
+		initTimer();
+		return true;
+	}
 }
