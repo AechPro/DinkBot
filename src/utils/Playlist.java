@@ -44,6 +44,7 @@ public class Playlist
 			System.out.println("instantiating thread");
 			t = new Thread()
 			{
+				@SuppressWarnings("static-access")
 				public void run()
 				{
 					while(true)
@@ -53,7 +54,7 @@ public class Playlist
 						{
 							System.out.println("playlist channel not null, outputting next item");
 							if(index >= commands.size()){index=0;}
-							commands.get(index).sendMessage(channel);
+							commands.get(index).sendMessage(channel,null);
 							index++;
 							try{t.sleep(sleepTime);}
 							catch(Exception e){e.printStackTrace();}
@@ -82,7 +83,7 @@ public class Playlist
 	public void pause(){channel = null;}
 	public void random(TextChannel chann)
 	{
-		commands.get((int)(Math.random()*commands.size())).sendMessage(chann);
+		commands.get((int)(Math.random()*commands.size())).sendMessage(chann,null);
 	}
 	public void restart(){index=0;}
 	public void giveInput(String input, TextChannel chann) //MUST BE PARSED TO VALID COMMANDS ONLY
