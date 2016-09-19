@@ -17,4 +17,6 @@ Add ability for bot to access voice channel and play audio (music playlists?)
 
 Add ability for bot to access imgur and post straight from there (worth the effort?) 
 
-Remove bot key from public repository.
+Increase efficiency of Playlist.java.
+
+Create Obj package for Playlist and all future usable objects.
