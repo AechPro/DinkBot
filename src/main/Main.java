@@ -20,7 +20,7 @@ public class Main
 		try 
 		{
 			bot.addListener(listener);
-			bot.setBotToken("MjI1MzY5OTE4MjUyNjQ2NDAx.CroDtw.bLwog-OoOKUZcX5S3MlgrQhTTLw").buildBlocking();
+			bot.setBotToken(/*TOKEN*/).buildBlocking();
 			bot.setAutoReconnect(true);
 			System.out.println("finished building");
 		}
