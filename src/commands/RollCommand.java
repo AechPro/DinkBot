@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.dv8tion.jda.entities.TextChannel;
 
-public class RollCommand extends ParameterCommand
+public class RollCommand extends Command
 {
 	private int result;
 	public RollCommand(String m, File f, String n, int maxU) 
@@ -45,5 +45,7 @@ public class RollCommand extends ParameterCommand
 	{
 		return (int)(Math.random()*dNum)+1;
 	}
+	@Override
+	public boolean create(String[] args) {return true;}
 
 }
