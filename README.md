@@ -1,7 +1,7 @@
 # DinkBot
 A bot for Discord named DinkBot.
 
-#Functionality:
+#Functionality
 
 Commands are entered with the following syntax: 
 
@@ -9,7 +9,7 @@ Commands are entered with the following syntax:
 
 Where [command name] is the name of the command the user intends to execute, and [param 1] [param 2] ... [param x] are the parameters required to execute the command (if any).
 
-#TODO:
+#TODO
 
 Add ability for bot to perform administrative actions through voting (maybe?) 
 
