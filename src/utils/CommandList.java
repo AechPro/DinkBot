@@ -1,7 +1,6 @@
 package utils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import commands.*;
@@ -9,15 +8,8 @@ import commands.*;
 public class CommandList 
 {
 	private static HashMap<String, Command> commandMap;
-	private static HashMap<String, PlaylistCommand> playlistMap;
-	private static Playlist currentPlaylist;
-	private static VoteCommand vote;
-	private static RollCommand roller;
 	public CommandList()
 	{
-		currentPlaylist = null;
-		vote = null;
-		playlistMap = new HashMap<String, PlaylistCommand>();
 		fillCommandList();
 	}
 	
@@ -26,29 +18,30 @@ public class CommandList
 		if(!commandMap.containsKey(key)){return null;}
 		return commandMap.get(key);
 	}
-	public PlaylistCommand findPlaylistCommand(String key)
+	public void createCommand(String key, String[] args)
 	{
-		return playlistMap.get(key);
-	}
-	public VoteCommand getCurrentVote(){return vote;}
-	public RollCommand getCurrentRoll(){return roller;}
-	public void setVote(VoteCommand i){vote=i;}
-	public void addPlaylist(String[] args)
-	{
-		PlaylistCommand command = new PlaylistCommand(null,null,args[1],1);
-		if(command.setPlaylist(args))
+		switch(key)
 		{
-			playlistMap.put(args[1], command);
-			System.out.println("PLAYLIST CREATED");
-			return;
+			case "playlist":
+				commandMap.put(key+args[1], new PlaylistCommand(null,null,args[1],1));
+				break;
+			case "vote":
+				commandMap.put(key+args[1], new VoteCommand(null,null,args[1],1));
+				break;
+			case "roll":
+				commandMap.put(key+args[1], new RollCommand(null,null,args[1],1));
+				break;
 		}
-		System.out.println("FAILED TO CREATE PLAYLIST");
+		if(commandMap.get(key+args[1]).create(args))
+		{
+			System.out.println("COMMAND ADDED SUCCESSFULLY");
+		}
+		else{System.out.println("COMMAND COULD NOT BE ADDED");}
 	}
 	private void fillCommandList()
 	{
 		commandMap = new HashMap<String, Command>();
-		
-		String helpString = "The currently available commands are: \n !help \n !burn \n !kappa \n !ping \n !gonbgud \n !triggered";
+		String helpString = "The currently available commands are: \n !help \n !burn \n !kappa \n !ping \n !gonbgud \n !triggered \n !vote [args] \n !playlist [args] \n !roll [args]";
 		
 		int maxMessagesPerSecond = 10;
 		DefaultCommand kappa = new DefaultCommand(null, new File("resources/twitch emotes/Kappa.png"),"Kappa",maxMessagesPerSecond);
@@ -70,8 +63,4 @@ public class CommandList
 		commandMap.put(gonbgud.getName().toLowerCase(),gonbgud);
 	}
 	
-	public Playlist getPlaylist(String key){return playlistMap.get(key).getPlaylist();}
-	public Playlist getCurrentPlaylist(){return currentPlaylist;}
-	public void setCurrentPlaylist(Playlist i){currentPlaylist = i;}
-	public void setCurrentRoller(RollCommand i){roller = i;}
 }
