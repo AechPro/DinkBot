@@ -26,15 +26,6 @@ public class Main
 		}
 		catch (Exception e){e.printStackTrace();}
 		System.out.println("DID SOMEBODY RING THE DINKSTER?");
-		
-		/*commands.put("ping", new PingCommand());
-		commands.put("kappa", new KappaCommand());
-		commands.put("burn", new BurnCommand());
-		commands.put("help", new HelpCommand());
-		commands.put("triggered", new TriggeredCommand());
-		commands.put("gonbgud", new GonBGudCommand());
-		//commands.put("meme", new MemeCommand());*/
-		
 	}
 	
 	
