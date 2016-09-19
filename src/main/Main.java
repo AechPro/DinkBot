@@ -6,13 +6,16 @@ import utils.*;
 public class Main
 {
 	private JDABuilder bot;
-	public static final CommandParser PARSER = new CommandParser();
+	public static CommandParser parser;
 	private static ChatListener listener;
 	private static CommandList commands;
+	private static CommandHandler handler;
 	public Main()
 	{
 		commands = new CommandList();
-		listener  = new ChatListener(PARSER,commands);
+		parser = new CommandParser();
+		handler = new CommandHandler(commands);
+		listener  = new ChatListener(parser,handler);
 		bot = new JDABuilder();
 		try 
 		{
