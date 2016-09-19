@@ -11,7 +11,7 @@ Where [command name] is the name of the command the user intends to execute, and
 
 Re-factor CommandList.java to use general list of ParameterCommands instead of individual functions for each type of parameter command (may require re-writing ParameterCommand.java).
 
-Add ability for bot to perform administrative actions through voting (maybe?)
+Add ability for bot to perform administrative actions through voting (maybe?) #newline
 Add ability for bot to access voice channel and play audio (music playlists?)
 Add ability for bot to access imgur and post straight from there (worth the effort?)
 Remove bot key from public repository.
