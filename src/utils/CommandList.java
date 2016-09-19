@@ -5,86 +5,73 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import commands.*;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 public class CommandList 
 {
-	private static HashMap<String, Command> commands;
-	private static ArrayList<String> specialChatKeys;
+	private static HashMap<String, Command> commandMap;
+	private static HashMap<String, PlaylistCommand> playlistMap;
+	private static Playlist currentPlaylist;
+	private static VoteCommand vote;
+	private static RollCommand roller;
 	public CommandList()
 	{
-		specialChatKeys = new ArrayList<String>();
+		currentPlaylist = null;
+		vote = null;
+		playlistMap = new HashMap<String, PlaylistCommand>();
 		fillCommandList();
 	}
-	public boolean handleCommand(CommandParser.CommandContainer cmd)
+	
+	public Command findCommand(String key)
 	{
-		System.out.println("handle command with "+cmd.INVOKE);
-		if(commands.containsKey(cmd.INVOKE))
+		if(!commandMap.containsKey(key)){return null;}
+		return commandMap.get(key);
+	}
+	public PlaylistCommand findPlaylistCommand(String key)
+	{
+		return playlistMap.get(key);
+	}
+	public VoteCommand getCurrentVote(){return vote;}
+	public RollCommand getCurrentRoll(){return roller;}
+	public void setVote(VoteCommand i){vote=i;}
+	public void addPlaylist(String[] args)
+	{
+		PlaylistCommand command = new PlaylistCommand(null,null,args[1],1);
+		if(command.setPlaylist(args))
 		{
-			System.out.println("key "+cmd.INVOKE+" found");
-			commands.get(cmd.INVOKE).sendMessage(cmd.EVENT.getTextChannel());
+			playlistMap.put(args[1], command);
+			System.out.println("PLAYLIST CREATED");
+			return;
 		}
-		return commands.containsKey(cmd.INVOKE);
+		System.out.println("FAILED TO CREATE PLAYLIST");
 	}
-	public boolean handleCommand(String key, MessageReceivedEvent event)
-	{
-		System.out.println("received string key: "+key);
-		String mapKey = "";
-		for(int i=0;i<specialChatKeys.size();i++)
-		{
-			if(key.contains(specialChatKeys.get(i)))
-			{
-				mapKey = specialChatKeys.get(i);
-				break;
-			}
-		}
-		if(mapKey.equals("")){return false;}
-		System.out.println("found command with key "+mapKey);
-		commands.get(mapKey).sendMessage(event.getTextChannel());
-		return true;
-	}
-	/*
-	//NOT MY CODE
-	private ArrayList<String> getMapspecialChatKeys() 
-	{
-		ArrayList<String> specialChatKeys = new ArrayList<String>();
-	    Iterator<Entry<String, Command>> it = commands.entrySet().iterator();
-	    while (it.hasNext()) 
-	    {
-	        HashMap.Entry pair = (HashMap.Entry)it.next();
-	        System.out.println(pair.getKey() + " = " + pair.getValue());
-	        specialChatKeys.add(pair.getKey().toString());
-	        it.remove(); // avoids a ConcurrentModificationException
-	    }
-	    return specialChatKeys;
-	}
-	//THANKS INTERNET
-	*/
 	private void fillCommandList()
 	{
-		commands = new HashMap<String, Command>();
+		commandMap = new HashMap<String, Command>();
 		
 		String helpString = "The currently available commands are: \n !help \n !burn \n !kappa \n !ping \n !gonbgud \n !triggered";
-		int maxMessagesPerSecond = 1;
+		
+		int maxMessagesPerSecond = 10;
 		DefaultCommand kappa = new DefaultCommand(null, new File("resources/twitch emotes/Kappa.png"),"Kappa",maxMessagesPerSecond);
 		DefaultCommand triggered = new DefaultCommand(null, new File("resources/triggered.png"),"Triggered",maxMessagesPerSecond);
 		DefaultCommand help = new DefaultCommand(helpString, null, "Help",maxMessagesPerSecond);
 		DefaultCommand ping = new DefaultCommand("Pong!", null, "Ping",maxMessagesPerSecond);
 		DefaultCommand burn = new DefaultCommand("Let me help you with that:\n https://en.wikipedia.org/wiki/List_of_burn_centers_in_the_United_States", null, "Burn",maxMessagesPerSecond);
-		DefaultCommand gonbgud = new DefaultCommand(null,new File("resoruces/gonbgud.gif"),"GonBGud",maxMessagesPerSecond);
-		DefaultCommand whoIsMatt = new DefaultCommand("This man sexually identifies as a neckbeard:",new File("resources/matt unveiled.png"),"Who is matt",maxMessagesPerSecond*10);
-		DefaultCommand dinkster = new DefaultCommand("DID SOMEBODY RING THE DINKSTER?!",null,"dinkster",maxMessagesPerSecond*10);
+		DefaultCommand gonbgud = new DefaultCommand(null,new File("resources/gonbgud.gif"),"GonBGud",maxMessagesPerSecond);
+		DefaultCommand karl = new DefaultCommand("Text sent.",null,"karl",maxMessagesPerSecond*10);
+		DefaultCommand number = new DefaultCommand("35",null,"number",maxMessagesPerSecond*10);
 		
-		commands.put(whoIsMatt.getName().toLowerCase(),whoIsMatt);
-		commands.put(dinkster.getName().toLowerCase(),dinkster);
-		commands.put(kappa.getName().toLowerCase(),kappa);
-		commands.put(triggered.getName().toLowerCase(),triggered);
-		commands.put(help.getName().toLowerCase(),help);
-		commands.put(ping.getName().toLowerCase(),ping);
-		commands.put(burn.getName().toLowerCase(),burn);
-		commands.put(gonbgud.getName().toLowerCase(),gonbgud);
-		
-		specialChatKeys.add(whoIsMatt.getName().toLowerCase());
-		specialChatKeys.add(dinkster.getName().toLowerCase());
+		commandMap.put(number.getName().toLowerCase(),number);
+		commandMap.put(karl.getName().toLowerCase(),karl);
+		commandMap.put(kappa.getName().toLowerCase(),kappa);
+		commandMap.put(triggered.getName().toLowerCase(),triggered);
+		commandMap.put(help.getName().toLowerCase(),help);
+		commandMap.put(ping.getName().toLowerCase(),ping);
+		commandMap.put(burn.getName().toLowerCase(),burn);
+		commandMap.put(gonbgud.getName().toLowerCase(),gonbgud);
 	}
+	
+	public Playlist getPlaylist(String key){return playlistMap.get(key).getPlaylist();}
+	public Playlist getCurrentPlaylist(){return currentPlaylist;}
+	public void setCurrentPlaylist(Playlist i){currentPlaylist = i;}
+	public void setCurrentRoller(RollCommand i){roller = i;}
 }
