@@ -6,7 +6,7 @@ import utils.Playlist;
 
 import net.dv8tion.jda.entities.TextChannel;
 
-public class PlaylistCommand extends ParameterCommand
+public class PlaylistCommand extends Command
 {
 	private static Playlist playlist;
 	public PlaylistCommand(String m, File f, String n, int maxU)
@@ -56,7 +56,7 @@ public class PlaylistCommand extends ParameterCommand
 				break;
 		}
 	}
-	public boolean setPlaylist(String[] args)
+	public boolean create(String[] args)
 	{
 		playlist = new Playlist(args[1], args[2], Integer.parseInt(args[3]));
 		return playlist != null;
